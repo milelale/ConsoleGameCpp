@@ -266,7 +266,7 @@ void responseTurn(){
 void micelanious(){
 	if(numOfTurns % 4 == 0){
 		enemy1.locationx = rand() % 5 + 1;
-		if(rand() % 5 == 1){
+		if(0){
 			locationOfObjects.push_back(enemy2.type);
 			locationOfObjects.push_back(enemy2.locationx);
 			locationOfObjects.push_back(enemy2.locationy);
