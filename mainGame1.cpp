@@ -20,30 +20,25 @@ class object{
 object producer{
 	producer.price = 100,
 	producer.health = 1,
-	producer.alive = true,
  	producer.type = 7439
 };
 object shooter{
 	shooter.price = 200,
 	shooter.health = 1,
-	shooter.alive = true,
 	shooter.alive = 9097
 };
 object wall{
 	wall.price = 150,
 	wall.health = 5,
-	wall.alive = true,
 	wall.type = 4546
 };
 object enemy1{
 	enemy1.health = 4,
-	enemy1.alive = true,
 	enemy1.type = 2384,
 	enemy1.locationy = 10
 };
 object enemy2{
 	enemy2.health = 6,
-	enemy2.alive = true,
 	enemy2.type = 6412,
 	enemy2.locationy = 10
 };
