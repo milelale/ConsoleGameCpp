@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <time.h>
 using namespace std;
-bool gameOver = false;
-int money = 100, response, numOfProducers = 0, numOfTurns = -3;;
+bool gameOver = false, langSerb = false, gameRunning = true;
+int money = 100, response, numOfProducers = 0, numOfTurns = -3;
 vector<int> locationOfObjects; 
 class object{
 	public:
@@ -20,25 +20,30 @@ class object{
 object producer{
 	producer.price = 100,
 	producer.health = 1,
+	producer.alive = true,
  	producer.type = 7439
 };
 object shooter{
 	shooter.price = 200,
 	shooter.health = 1,
+	shooter.alive = true,
 	shooter.alive = 9097
 };
 object wall{
 	wall.price = 150,
 	wall.health = 5,
+	wall.alive = true,
 	wall.type = 4546
 };
 object enemy1{
 	enemy1.health = 4,
+	enemy1.alive = true,
 	enemy1.type = 2384,
 	enemy1.locationy = 10
 };
 object enemy2{
 	enemy2.health = 6,
+	enemy2.alive = true,
 	enemy2.type = 6412,
 	enemy2.locationy = 10
 };
@@ -67,6 +72,9 @@ void battleField(){
 									}
 									else{
 										cout << "# ";
+										if(locationOfObjects[l+3] == 0){
+											numOfProducers--;
+										}
 									}
 								}
 								else if(locationOfObjects[l] == shooter.type){
@@ -130,10 +138,9 @@ void battleField(){
 										gameOver = true;
 									}
 								}
-								
-								else if(locationOfObjects[l] == enemy2.type){
+								else if(locationOfObjects[l] == enemy2.type || true){
 									if(locationOfObjects[l+3] > 0){
-										cout << "E1 ";
+										cout << "E2 ";
 									}
 									else{
 										cout << "# ";	
@@ -143,6 +150,11 @@ void battleField(){
 										if(locationOfObjects[k] == producer.type && locationOfObjects[l+1] == locationOfObjects[k+1] && locationOfObjects[l+2] - 1 == locationOfObjects[k+2]){
 											if(locationOfObjects[k+3] > 0){
 												locationOfObjects[l+2]++;
+											}
+											else{
+												if(locationOfObjects[k+3] == -1){
+													numOfProducers--;
+												}
 											}
 											if(locationOfObjects[l+3] > 0){
 												locationOfObjects[k+3]--;
@@ -175,6 +187,7 @@ void battleField(){
 									if(locationOfObjects[l+2] == 0 && locationOfObjects[l+3] > 0){
 										gameOver = true;
 									}
+									
 								}
 							}
 						}
@@ -184,9 +197,16 @@ void battleField(){
 }
 void responseTurn(){
 	
-	cout << endl << "What do you want to place this turn?" << endl << "1.Type anything to skip the turn" << endl << "2.Type 2 for a producer - 100$" << endl << "3.Type 3 for a shooter 200$" << endl << "4.Type 4 for a wall - 150$" << endl;
-	cin >> response;
-	
+	if(langSerb){
+		cout << endl << "Sta hocete da postavite ovaj potez?" << endl << "1.Unesite bilo sta da preskocite potez";
+		cout << endl << "2.Unesite 2 za proizvodjaca - 100$" << endl << "3.Unesite 3 za pucaca 200$" << endl;
+		cout << "4.Unesite 4 za zid - 150$" << endl << "5.Unesite 5 ako hocete da promenite jezik na engleski"<< endl;
+	}
+	else{
+		cout << endl << "What do you want to place this turn?" << endl << "1.Type anything to skip the turn" << endl << "2.Type 2 for a producer - 100$";
+		cout << endl << "3.Type 3 for a shooter 200$" << endl << "4.Type 4 for a wall - 150$" << endl << "5.Type 5 for changing language to serbian"<< endl;
+	}
+    cin >> response;
 	switch(response){
 		case 2:
 		if(producer.price > money){
@@ -240,12 +260,21 @@ void responseTurn(){
 			locationOfObjects.push_back(wall.health);
 		}
 		break;
+		
+		case 5:
+			if(langSerb){
+				langSerb = false;
+			}
+			else{
+				langSerb = true;
+			}
+		break;
 	}
 }
 void micelanious(){
 	if(numOfTurns % 5 == 0){
 		enemy1.locationx = rand() % 5 + 1;
-		if(0){
+		if(false){
 			locationOfObjects.push_back(enemy2.type);
 			locationOfObjects.push_back(enemy2.locationx);
 			locationOfObjects.push_back(enemy2.locationy);
@@ -264,15 +293,18 @@ void micelanious(){
 	if(gameOver == true){
 		cout << "You died";
 		Sleep(3000);
+		
 	}
 }
 int main(){
 	srand(time(0));
 	system("CLS");
-	while(gameOver != true){
-		battleField();
-		responseTurn();
-		micelanious();
+	while(gameRunning == true){
+		while(gameOver != true){
+			battleField();
+			responseTurn();
+			micelanious();
+		}
 	}
 	return 0;
 }
